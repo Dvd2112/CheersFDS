@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+vendor/
+__pycache__/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Build outputs
+frontend/build/
+frontend/dist/
+backend/dist/
+*.log
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Database
+*.sqlite
+*.sqlite3
+*.db
+
+# Docker
+.dockerignore
+Dockerfile
+
+# IDE
+.editorconfig
+
+# Testing
+coverage/
+.nyc_output/
+
+# Production
+*.tgz
+*.tar.gz

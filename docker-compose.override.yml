@@ -1,0 +1,17 @@
+version: '3.8'
+
+# Arquivo de override para desenvolvimento local
+# Ele sobrescreve valores do docker-compose.yml automaticamente
+
+services:
+  php:
+    environment:
+      APP_ENV: development
+      JWT_SECRET: dev-secret-key-change-in-production
+    ports:
+      - "9000:9000"
+
+  node:
+    environment:
+      REACT_APP_API_URL: http://localhost:8000
+      REACT_APP_DEBUG: 'true'
