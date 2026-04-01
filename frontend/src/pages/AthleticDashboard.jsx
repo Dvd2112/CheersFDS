@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Dashboard.css';
+import APIService from '../services/api';
 
 const AthleticDashboard = ({ user }) => {
   const [expenses, setExpenses] = useState([]);
@@ -12,17 +13,9 @@ const AthleticDashboard = ({ user }) => {
   const fetchAthleticData = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:8000/api/athletic/data', {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setExpenses(data.expenses || []);
-        setBalance(data.balance || 0);
-      }
+      const data = await APIService.getAthleticData(token);
+      setExpenses(data.expenses || []);
+      setBalance(data.balance || 0);
     } catch (err) {
       console.error('Erro ao carregar dados:', err);
     }

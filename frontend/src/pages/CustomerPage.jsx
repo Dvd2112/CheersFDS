@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Dashboard.css';
+import APIService from '../services/api';
 
 const CustomerPage = ({ user }) => {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
@@ -11,17 +12,9 @@ const CustomerPage = ({ user }) => {
 
   const fetchEvents = async () => {
     try {
-      const tokens = localStorage.getItem('token');
-      const response = await fetch('http://localhost:8000/api/events/upcoming', {
-        headers: {
-          'Authorization': `Bearer ${tokens}`,
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setUpcomingEvents(data.events || []);
-      }
+      const token = localStorage.getItem('token');
+      const data = await APIService.getUpcomingEvents(token);
+      setUpcomingEvents(data.events || []);
     } catch (err) {
       console.error('Erro ao carregar eventos:', err);
     }

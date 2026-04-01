@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Auth.css';
+import APIService from '../services/api';
 
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState('');
@@ -14,30 +15,14 @@ const Login = ({ onLogin }) => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:8000/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          password,
-          userType,
-        }),
-      });
+      const data = await APIService.login(email, password, userType);
 
-      const data = await response.json();
-
-      if (response.ok) {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('userType', userType);
-        localStorage.setItem('user', JSON.stringify(data.user));
-        onLogin(data.user, userType);
-      } else {
-        setError(data.message || 'Erro ao fazer login');
-      }
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('userType', userType);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      onLogin(data.user, userType);
     } catch (err) {
-      setError('Erro de conexão com o servidor');
+      setError(err.message || 'Erro ao fazer login');
       console.error(err);
     } finally {
       setLoading(false);

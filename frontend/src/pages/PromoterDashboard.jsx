@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Dashboard.css';
+import APIService from '../services/api';
 
 const PromoterDashboard = ({ user }) => {
   const [events, setEvents] = useState([]);
@@ -17,17 +18,9 @@ const PromoterDashboard = ({ user }) => {
   const fetchPromoterData = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:8000/api/promoter/events', {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setEvents(data.events || []);
-        setStats(data.stats);
-      }
+      const data = await APIService.getPromoterEvents(token);
+      setEvents(data.events || []);
+      setStats(data.stats);
     } catch (err) {
       console.error('Erro ao carregar dados:', err);
     }

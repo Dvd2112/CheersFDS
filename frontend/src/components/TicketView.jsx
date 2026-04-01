@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './TicketView.css';
+import APIService from '../services/api';
 
 const TicketView = ({ user, userType }) => {
   const [tickets, setTickets] = useState([]);
@@ -14,21 +15,10 @@ const TicketView = ({ user, userType }) => {
   const fetchTickets = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:8000/api/tickets', {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setTickets(data.tickets || []);
-      } else {
-        setError(data.message || 'Erro ao carregar ingressos');
-      }
+      const data = await APIService.getTickets(token);
+      setTickets(data.tickets || []);
     } catch (err) {
-      setError('Erro ao conectar ao servidor');
+      setError('Erro ao carregar ingressos');
       console.error(err);
     } finally {
       setLoading(false);
